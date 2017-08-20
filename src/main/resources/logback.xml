@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--By default, the configuration file will be scanned for changes once every minute. Values can be specified in units of milliseconds, seconds, minutes or hours-->
+<configuration scan="true" scanPeriod="10 seconds">
+    <!-- log.dir from sys properties : java cp -Dlog_dir=/tmp -->
+    <property name="log.file.name.prefix" value="test_log.log"/>
+    <property name="log.file.info.name.postfix" value=".info"/>
+    <property name="log.file.debug.name.postfix" value=".debug"/>
+    <property name="log.file.warn.name.postfix" value=".warn"/>
+    <property name="log.file.error.name.postfix" value=".error"/>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- %-5level stands for whitespaces -->
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger [%file:%line] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rolling_file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <Append>true</Append>
+        <File>${log_dir}\\${log.file.name.prefix}${log.file.info.name.postfix}</File>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger [%file:%line] - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <maxIndex>5</maxIndex>
+            <FileNamePattern>${log_dir}\\${log.file.name.prefix}${log.file.info.name.postfix}.%i</FileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>1MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="rolling_file_debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <Append>true</Append>
+        <File>${log_dir}\\${log.file.name.prefix}${log.file.debug.name.postfix}</File>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger [%file:%line] - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <maxIndex>2</maxIndex>
+            <FileNamePattern>${log_dir}\\${log.file.name.prefix}${log.file.debug.name.postfix}.%i</FileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>1MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+    <appender name="rolling_file_warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${log_dir}\\${log.file.name.prefix}${log.file.warn.name.postfix}</File>
+        <Append>true</Append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger [%file:%line] - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <maxIndex>2</maxIndex>
+            <FileNamePattern>${log_dir}/${log.file.name.prefix}${log.file.warn.name.postfix}.%i</FileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>1MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <appender name="rolling_file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+        <File>${log_dir}\\${log.file.name.prefix}${log.file.error.name.postfix}</File>
+        <Append>true</Append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger [%file:%line] - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <maxIndex>2</maxIndex>
+            <FileNamePattern>${log_dir}\\${log.file.name.prefix}${log.file.error.name.postfix}.%i</FileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>1MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <!-- below for test,logging is package in the scala of folder
+    <logger name="logging" level="debug" additivity="false">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="rolling_file_info"/>
+        <appender-ref ref="rolling_file_debug"/>
+        <appender-ref ref="rolling_file_warn"/>
+        <appender-ref ref="rolling_file_error"/>
+    </logger>-->
+
+    <root level="debug">
+        <appender-ref ref="stdout"/>
+        <!--
+        <appender-ref ref="rolling_file_info"/>
+        <appender-ref ref="rolling_file_debug"/>
+        <appender-ref ref="rolling_file_warn"/>
+        <appender-ref ref="rolling_file_error"/>
+        -->
+    </root>
+</configuration>
